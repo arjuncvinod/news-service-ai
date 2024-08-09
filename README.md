@@ -1,1 +1,1 @@
-# news-service-ai
+# Ai Driven News Service
