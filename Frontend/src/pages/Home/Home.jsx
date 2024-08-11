@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import styles from "./Home.module.css";
 import { getDate } from "../../services/functions";
 import LogoutButton from "../../components/Logout/Logout";
+import Loader from "../../components/Loader/Loader";
 function App() {
   const [articles, setArticles] = useState([]);
   const deImage =
@@ -14,7 +15,7 @@ function App() {
       try {
         const response = await fetch(url);
         const data = await response.json();
-        setArticles(data.articles);
+        setArticles(data.articles.slice(0, 21));
       } catch (error) {
         console.error("Error fetching the news:", error);
       }
@@ -22,7 +23,9 @@ function App() {
 
     fetchNews();
   }, []);
-
+  if(!articles){
+    return(<Loader />)
+  }
   return (
     <div className={styles.App}>
       <header className={styles.header}>
