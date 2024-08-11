@@ -60,7 +60,7 @@ function App() {
 
       <div className={styles.container}>
         <section className={styles.newsCardsContainer}>
-          {articles
+          {articles && articles
             .filter((article) => article.title != "[Removed]")
             .filter((article) => article.urlToImage)
             .map((article, index) => (
