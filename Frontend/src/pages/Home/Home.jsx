@@ -1,30 +1,31 @@
-import { useState, useEffect } from "react";
+import { useState,useLayoutEffect } from "react";
 import styles from "./Home.module.css";
 import { getDate } from "../../services/functions";
 import LogoutButton from "../../components/Logout/Logout";
 import Loader from "../../components/Loader/Loader";
 function App() {
-  const [articles, setArticles] = useState([]);
+  const [articles, setArticles] = useState(null);
   const deImage =
     "https://www.euractiv.com/wp-content/uploads/sites/2/2014/03/news-default.jpeg";
-  useEffect(() => {
+  useLayoutEffect(() => {
     const fetchNews = async () => {
       const url = `https://newsapi.org/v2/everything?q=india&from=${getDate()}&sortBy=popularity&apiKey=37b720850b0e4450a50a8b543e831d94`;
-      console.log(url);
-
       try {
         const response = await fetch(url);
         const data = await response.json();
         setArticles(data.articles.slice(0, 21));
+        console.log("news readr");
+        
       } catch (error) {
         console.error("Error fetching the news:", error);
       }
     };
 
     fetchNews();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   if(!articles){
-    return(<Loader />)
+    return (<Loader />)
   }
   return (
     <div className={styles.App}>
