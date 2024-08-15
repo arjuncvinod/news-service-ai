@@ -1,0 +1,11 @@
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&family=Inter:wght@100..900&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap');
+@font-face {
+    font-family: Logirent;
+    src: url("./assets/Fonts/Logirent.otf");
+  }
+:root{
+    --primaryclr:#f0233b;
+    --secondaryclr:#FF3385;
+    --black:#282828;
+    --light-gray:#adadad;
+}

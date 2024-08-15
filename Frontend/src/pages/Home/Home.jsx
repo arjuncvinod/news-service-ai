@@ -1,31 +1,35 @@
-import { useState,useLayoutEffect } from "react";
+import { useState, useEffect } from "react";
 import styles from "./Home.module.css";
 import { getDate } from "../../services/functions";
 import LogoutButton from "../../components/Logout/Logout";
 import Loader from "../../components/Loader/Loader";
 function App() {
   const [articles, setArticles] = useState(null);
+  const [query, setQuery] = useState("all");
   const deImage =
     "https://www.euractiv.com/wp-content/uploads/sites/2/2014/03/news-default.jpeg";
-  useLayoutEffect(() => {
+  useEffect(() => {
     const fetchNews = async () => {
-      const url = `https://newsapi.org/v2/everything?q=india&from=${getDate()}&sortBy=popularity&apiKey=37b720850b0e4450a50a8b543e831d94`;
+      const url = `https://newsapi.org/v2/everything?q=${query}&language=en&from=${getDate()}&sortBy=popularity&apiKey=37b720850b0e4450a50a8b543e831d94`;
+      // const url = `https://newsdata.io/api/1/news?apikey=pub_506169d1fc95f40f1ea7d9b69472ceeae2f2d&q=india  `;
       try {
         const response = await fetch(url);
         const data = await response.json();
-        setArticles(data.articles.slice(0, 21));
+        const sortedArticles = data.articles.sort(
+          (a, b) => new Date(b.publishedAt) - new Date(a.publishedAt)
+        );
+        setArticles(sortedArticles.slice(0, 21));
         console.log("news readr");
-        
       } catch (error) {
         console.error("Error fetching the news:", error);
       }
     };
 
     fetchNews();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-  if(!articles){
-    return (<Loader />)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [query]);
+  if (!articles) {
+    return <Loader />;
   }
   return (
     <div className={styles.App}>
@@ -39,16 +43,34 @@ function App() {
           <nav className={styles.nav}>
             <ul className={styles.navList}>
               <li>
-                <a href="#">Home</a>
+                <p
+                  onClick={() => {
+                    setQuery("all");
+                  }}
+                >
+                  Global
+                </p>
               </li>
               <li>
-                <a href="#">About</a>
+                <p
+                  onClick={() => {
+                    setQuery("India");
+                  }}
+                >
+                  National
+                </p>
               </li>
               <li>
-                <a href="#">Services</a>
+                <p
+                  onClick={() => {
+                    setQuery("technology");
+                  }}
+                >
+                  Technology
+                </p>
               </li>
               <li>
-                <LogoutButton/>
+                <LogoutButton />
               </li>
             </ul>
           </nav>
@@ -64,18 +86,22 @@ function App() {
 
       <div className={styles.container}>
         <section className={styles.newsCardsContainer}>
-          {articles && articles
-            .filter((article) => article.title != "[Removed]")
-            .filter((article) => article.urlToImage)
-            .map((article, index) => (
-              <div key={index} className={styles.card}>
-                <img src={article.urlToImage || deImage} alt={article.title} />
-                <div className={styles.cardContent}>
-                  <h3>{article.title}</h3>
-                  <p>{article.description || "No description available."}</p>
+          {articles &&
+            articles
+              .filter((article) => article.title != "[Removed]")
+              .filter((article) => article.urlToImage)
+              .map((article, index) => (
+                <div key={index} className={styles.card}>
+                  <img
+                    src={article.urlToImage || deImage}
+                    alt={article.title}
+                  />
+                  <div className={styles.cardContent}>
+                    <h3>{article.title}</h3>
+                    <p>{article.description || "No description available."}</p>
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
         </section>
       </div>
 

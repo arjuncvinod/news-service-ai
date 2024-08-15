@@ -6,6 +6,7 @@ import LoginPage from './pages/Login/index';
 import RegisterPage from './pages/Register';
 import Dashboard from './pages/Dashboard/index';
 import Home from './pages/Home/Home';
+import NewHome from "./pages/Home/index"
 import Loader from './components/Loader/Loader';
 import './App.css';
 
@@ -50,6 +51,11 @@ const App = () => {
             path="*"
             element={<Navigate to={isAuthenticated ? "/home" : "/login"} />}
           />
+          <Route
+            path="/newhome"
+            element={<NewHome />}
+
+            />
         </Routes>
       </div>
     </Router>

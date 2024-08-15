@@ -1,0 +1,138 @@
+#nav{
+    display: flex;
+    /* background-color: rgb(240, 246, 135); */
+    flex-direction: column;
+}
+#nav .navRow1 , #nav .navRow2{ 
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    align-items: center;
+    height: 5rem;
+}
+#nav .navRow1 div{
+    flex: 1;
+    /* background-color: rebeccapurple; */
+    display: flex;
+}
+#nav .navRow1 .buttonContainer{
+    justify-content: start;
+}
+#nav .navRow1 button{
+    background-color: var(--primaryclr);
+    padding: 12px 24px;
+    height: fit-content;
+    color: white;
+    font-size: 1rem;
+    line-height: 1;
+}
+#nav .navRow1 button .mailIcon{
+    font-size: 1rem;
+}
+#nav .navRow1 .logoContainer{
+    justify-content: center;
+    /* padding: rem 0 1rem 0; */
+    display: flex;
+    align-items: center;
+    
+}
+#nav .navRow1 .logoContainer h1{
+    font-family: Logirent;
+    font-size: 2.5rem;
+    font-weight: 600;
+    line-height: 2.5rem;
+    display: flex;
+    margin-top: 1rem;
+}
+#nav .navRow1 .logoContainer h1 span{
+    font-family: inherit;
+    color: var(--primaryclr);
+}
+
+#nav .navRow1 .logoContainer img{
+    /* width: 180px; */
+    /* object-fit: cover; */
+    width: 40px;
+    height: 40px;
+    background-color:var(--primaryclr);
+    border-radius: 50%;
+    margin: 12px 2px 5px 5px;
+}
+#nav .navRow1 .socialContainer{
+    justify-content: end;
+}
+#nav .navRow1 .socialContainer .socials{
+    width: fit-content;
+    display: flex;
+    gap:10px;
+    justify-content: end;
+}
+#nav .navRow1 .socialContainer .socials .icon{
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    background-color: var(--primaryclr);
+}
+#nav .navRow1 .socialContainer .socials .icon svg{
+    color: white;
+    width: 1.2rem;
+}
+/* #nav .navRow1 .socialContainer .socials .icon:nth-child(2){
+    background-color: green;
+}
+#nav .navRow1 .socialContainer .socials .icon:nth-child(3){
+    background-color: yellow;
+}
+#nav .navRow1 .socialContainer .socials .icon:nth-child(4){
+    background-color: blue;
+} */
+ #nav hr{
+    border: 1px solid rgb(238, 230, 230);
+ }
+#nav .navRow2{
+    flex: 1; 
+    display: flex;
+    /* background-color: rgb(49, 233, 239); */
+    height: 5rem;
+    padding: 1.5rem 0;
+}
+#nav .navRow2 .menuContainer svg{
+    font-size: 2rem;
+    color: var(--primaryclr);
+}
+#nav .navRow2 .categoriesContainer{
+    display: flex;
+    flex-direction: row;
+    gap: 2rem;
+    justify-content: center;
+    width: 100%;
+    padding-left: 8vw;
+}
+#nav .navRow2 .inputContainer{
+    border: 1px solid transparent;
+    height: 2.5rem;
+    border-radius:  20px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    background-color: white;
+}
+#nav .navRow2 .inputContainer:has(input:focus){
+    border-color: var(--secondaryclr);
+}
+#nav .navRow2 .inputContainer .searchIcon{
+    color: var(--secondaryclr);
+    font-size: 1.6rem;
+    margin-right: 5px;
+
+}
+#nav .navRow2 .inputContainer input{
+    outline: none;
+    border: none;
+    height: 100%;
+    width: 80%;
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+}
