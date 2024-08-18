@@ -1,0 +1,44 @@
+.breakingContainer{
+    display: flex;
+    padding: 1rem 0;
+}
+.breakingHead{
+    width: 25%;
+    padding: 1.5rem 0;
+}
+.breakingHead h1{
+    font-size: 1.6rem;
+}
+.breakingcardContainer{
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    width: 75%;
+    flex-direction:row;
+    overflow-x: scroll;
+}
+.breakingcardContainer::-webkit-scrollbar{
+    display: none;
+}
+.breakingcard{
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    padding-left: 1rem;
+    /* background-color: green; */
+    width: fit-content;
+}
+.breakingcard::before{
+    content: '';
+    width: 5px;
+    height: 100%;
+    position: absolute;
+    background-color: var(--secondaryclr);
+    left: 0;
+}
+.breakingcard h1{
+text-wrap: nowrap;
+}
+.hrline{
+    border: 1px solid rgba(0, 0, 0, 0.07);
+}
