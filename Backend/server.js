@@ -188,7 +188,9 @@ app.get('/news', async (req, res) => {
     res.status(500).send({ error: 'Failed to retrieve news' });
   }
 });
-
+app.get('/', async (req, res) => {
+  res.send("API is live")
+})
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
 });
