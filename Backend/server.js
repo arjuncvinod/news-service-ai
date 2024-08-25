@@ -84,7 +84,7 @@
 // app.listen(port, () => {
 //   console.log(`Server running at http://localhost:${port}`);
 // });
-
+import 'dotenv/config';
 import express from 'express';
 import cors from 'cors';
 import bodyParser from 'body-parser';
