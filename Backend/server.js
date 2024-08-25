@@ -93,7 +93,7 @@ import axios from 'axios';
 import { format, subDays } from 'date-fns';
 
 const app = express();
-const port = 3000;
+const port = process.env.PORT
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -188,7 +188,7 @@ app.get('/news', async (req, res) => {
     res.status(500).send({ error: 'Failed to retrieve news' });
   }
 });
-app.get('/', async (req, res) => {
+app.get('/news', async (req, res) => {
   res.send("API is live")
 })
 app.listen(port, () => {
