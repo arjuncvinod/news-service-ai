@@ -3,7 +3,7 @@
 // import bodyParser from 'body-parser';
 // import { db } from './firebase.js';
 // import axios from 'axios';
-// import { format, subDays } from 'date-fns';
+// import { format, subDays, parseISO } from 'date-fns';
 
 // const app = express();
 // const port = 3000;
@@ -17,49 +17,67 @@
 //   return format(subDays(new Date(), 1), 'yyyy-MM-dd');
 // };
 
-// app.get('/news/all', async (req, res) => {
+// // Route to save news data from the News API to the database
+// app.post('/news/save', async (req, res) => {
 //   try {
 //     const todayDate = format(new Date(), 'yyyy-MM-dd');
 //     const yesterdayDate = getYesterdayDate();
 
-//     const newsDoc = await db.collection('news').doc(todayDate).get();
+//     // Fetch news from the external API
+//     const response = await axios.get('https://newsapi.org/v2/everything', {
+//       params: {
+//         q: 'all',
+//         language: 'en',
+//         sortBy: 'popularity',
+//         apiKey: '37b720850b0e4450a50a8b543e831d94', // Replace with your actual API key
+//         from: yesterdayDate,
+//       },
+//     });
 
-//     let articles;
-//     if (newsDoc.exists) {
-//       // If the document exists, retrieve the articles
-//       articles = newsDoc.data().articles;
-//     } else {
-//       // If the document does not exist, fetch from the news API
-//       const response = await axios.get('https://newsapi.org/v2/everything', {
-//         params: {
-//           q: 'all',
-//           language: 'en',
-//           sortBy: 'popularity',
-//           apiKey: '37b720850b0e4450a50a8b543e831d94',
-//           from: yesterdayDate,
-//         },
-//       });
+//     const articles = response.data.articles;
 
-//       articles = response.data.articles;
-
-//       // Save the news data to Firestore with today's date as the document ID
+//     if (articles && articles.length > 0) {
+//       // Save the news data to Firestore
 //       await db.collection('news').doc(todayDate).set({
 //         date: todayDate,
 //         articles: articles,
 //       });
+//       res.send({ message: 'News data saved successfully'});
+//     } else {
+//       res.status(404).send({ message: 'No articles found to save' });
 //     }
 
-//     // Log the content of each article to the console (Optional)
-//     articles.forEach((article, index) => {
-//       console.log(`Article ${index + 1}: ${article.content}`);
-//     });
+//   } catch (error) {
+//     console.error('Error saving news:', error);
+//     res.status(500).send({ error: 'Failed to save news' });
+//   }
+// });
 
-//     // Send the news data as a response
-//     res.send({ message: 'News data retrieved successfully', data: articles });
+// // Custom route to retrieve news data by date using a query parameter
+// app.get('/news', async (req, res) => {
+//   try {
+//     const { date } = req.query;
+
+//     if (!date) {
+//       return res.status(400).send({ error: 'Date query parameter is required' });
+//     }
+
+//     // Ensure the date is in a valid format
+//     const formattedDate = format(parseISO(date), 'yyyy-MM-dd');
+
+//     // Retrieve the document from Firestore with the given date as ID
+//     const newsDoc = await db.collection('news').doc(formattedDate).get();
+
+//     if (newsDoc.exists) {
+//       const articles = newsDoc.data().articles;
+//       res.send({ message: `News data for ${formattedDate} retrieved successfully`, data: articles });
+//     } else {
+//       res.status(404).send({ message: `No news data found for the date: ${formattedDate}` });
+//     }
 
 //   } catch (error) {
-//     console.error('Error fetching news:', error);
-//     res.status(500).send({ error: 'Failed to fetch news' });
+//     console.error('Error retrieving news:', error);
+//     res.status(500).send({ error: 'Failed to retrieve news' });
 //   }
 // });
 
@@ -72,7 +90,7 @@ import cors from 'cors';
 import bodyParser from 'body-parser';
 import { db } from './firebase.js';
 import axios from 'axios';
-import { format, subDays, parseISO } from 'date-fns';
+import { format, subDays } from 'date-fns';
 
 const app = express();
 const port = 3000;
@@ -81,37 +99,51 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// Function to get the date of yesterday
-const getYesterdayDate = () => {
-  return format(subDays(new Date(), 1), 'yyyy-MM-dd');
+// Function to fetch news by category
+const fetchNewsByCategory = async (category) => {
+  const yesterdayDate = format(subDays(new Date(), 1), 'yyyy-MM-dd');
+  
+  const response = await axios.get('https://newsapi.org/v2/everything', {
+    params: {
+      q: category,
+      language: 'en',
+      sortBy: 'popularity',
+      apiKey: '37b720850b0e4450a50a8b543e831d94', // Replace with your actual API key
+      from: yesterdayDate,
+    },
+  });
+
+  // Extract and format only the necessary fields
+  return response.data.articles.map(article => ({
+    publishedAt: article.publishedAt,
+    title: article.title,
+    description: article.description,
+    urlToImage: article.urlToImage,
+    content: article.content,
+    category: category,
+  }));
 };
 
 // Route to save news data from the News API to the database
 app.post('/news/save', async (req, res) => {
   try {
     const todayDate = format(new Date(), 'yyyy-MM-dd');
-    const yesterdayDate = getYesterdayDate();
 
-    // Fetch news from the external API
-    const response = await axios.get('https://newsapi.org/v2/everything', {
-      params: {
-        q: 'all',
-        language: 'en',
-        sortBy: 'popularity',
-        apiKey: '37b720850b0e4450a50a8b543e831d94', // Replace with your actual API key
-        from: yesterdayDate,
-      },
-    });
+    // Fetch news data for different categories
+    const internationalNews = await fetchNewsByCategory('international');
+    const nationalNews = await fetchNewsByCategory('india');
+    const technologyNews = await fetchNewsByCategory('technology');
 
-    const articles = response.data.articles;
+    // Combine all articles into one array
+    const allArticles = [...internationalNews, ...nationalNews, ...technologyNews];
 
-    if (articles && articles.length > 0) {
-      // Save the news data to Firestore
+    if (allArticles.length > 0) {
+      // Save the combined news data to Firestore
       await db.collection('news').doc(todayDate).set({
         date: todayDate,
-        articles: articles,
+        articles: allArticles,
       });
-      res.send({ message: 'News data saved successfully'});
+      res.send({ message: 'News data saved successfully', data: allArticles });
     } else {
       res.status(404).send({ message: 'No articles found to save' });
     }
@@ -122,24 +154,31 @@ app.post('/news/save', async (req, res) => {
   }
 });
 
-// Custom route to retrieve news data by date using a query parameter
+// Custom route to retrieve news data by date and category using query parameters
 app.get('/news', async (req, res) => {
   try {
-    const { date } = req.query;
+    const { date, category } = req.query;
 
     if (!date) {
       return res.status(400).send({ error: 'Date query parameter is required' });
     }
 
-    // Ensure the date is in a valid format
-    const formattedDate = format(parseISO(date), 'yyyy-MM-dd');
-
-    // Retrieve the document from Firestore with the given date as ID
+    const formattedDate = format(new Date(date), 'yyyy-MM-dd');
     const newsDoc = await db.collection('news').doc(formattedDate).get();
 
     if (newsDoc.exists) {
-      const articles = newsDoc.data().articles;
-      res.send({ message: `News data for ${formattedDate} retrieved successfully`, data: articles });
+      let articles = newsDoc.data().articles;
+
+      if (category) {
+        // Filter articles by category if provided
+        articles = articles.filter(article => article.category === category.toLocaleLowerCase());
+      }
+      
+      if (articles.length > 0) {
+        res.send({ message: `News data for ${formattedDate} retrieved successfully`, data: articles });
+      } else {
+        res.status(404).send({ message: `No news data found for the category: ${category}` });
+      }
     } else {
       res.status(404).send({ message: `No news data found for the date: ${formattedDate}` });
     }
