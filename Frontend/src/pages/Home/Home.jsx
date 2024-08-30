@@ -6,7 +6,7 @@ import LogoutButton from "../../components/Logout/Logout";
 import Loader from "../../components/Loader/Loader";
 function App() {
   const [articles, setArticles] = useState(null);
-  const [query, setQuery] = useState("international");
+  const [query, setQuery] = useState("india");
   const deImage =
     "https://www.euractiv.com/wp-content/uploads/sites/2/2014/03/news-default.jpeg";
     useEffect(() => {
@@ -20,7 +20,7 @@ function App() {
           setArticles(sortedArticles.slice(0, 21));
         } catch (error) {
           console.error("Error fetching the news:", error);
-          axios.post("https://news-service-api.vercel.app/news/save")
+          axios.post("http://localhost:3000/news/save")
         }
       };
     
@@ -44,10 +44,10 @@ function App() {
               <li>
                 <p
                   onClick={() => {
-                    setQuery("international");
+                    setQuery("kerala");
                   }}
                 >
-                  Global
+                  Kerala
                 </p>
               </li>
               <li>
@@ -62,10 +62,19 @@ function App() {
               <li>
                 <p
                   onClick={() => {
-                    setQuery("technology");
+                    setQuery("lifestyle");
                   }}
                 >
-                  Technology
+                  Lifestyle
+                </p>
+              </li>
+              <li>
+                <p
+                  onClick={() => {
+                    setQuery("education");
+                  }}
+                >
+                  education
                 </p>
               </li>
               <li>
@@ -94,7 +103,7 @@ function App() {
               .filter((article) => article.title != "[Removed]")
               .filter((article) => article.urlToImage)
               .map((article, index) => (
-                <div key={index} className={styles.card}>
+                <div key={index} className={styles.card} title={article.content}>
                   <img
                     src={article.urlToImage || deImage}
                     alt={article.title}
