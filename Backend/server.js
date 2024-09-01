@@ -39,7 +39,7 @@ app.post('/news/save', async (req, res) => {
     const businessyNews = await fetchNewsByCategory('business');
     const keralaNews = await fetchNewsByCategory('kerala');
     const educationNews = await fetchNewsByCategory('education');
-    const politicalNews = await fetchNewsByCategory('political-pulse/');
+    const politicalNews = await fetchNewsByCategory('political-pulse');
 
     const allArticles = [...internationalNews, ...nationalNews,...businessyNews,...keralaNews,...educationNews,...politicalNews];
 
@@ -73,7 +73,7 @@ app.get('/news', async (req, res) => {
     if (newsDoc.exists) {
       let articles = newsDoc.data().articles;
 
-      if (category) {
+      if (category && category.toLowerCase() !== 'all') {
         articles = articles.filter(article => article.category === category.toLowerCase());
       }
 
