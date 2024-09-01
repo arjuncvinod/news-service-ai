@@ -1,9 +1,13 @@
 import styles from "./styles.module.css";
+import WifiRoundedIcon from '@mui/icons-material/WifiRounded';
+import Marquee from "react-fast-marquee";
+import 'react-slideshow-image/dist/styles.css'
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 function Breakingcard(){
 return(
     <div className={styles.breakingcard}>
         <h1>International peace talk reach historic Agreement</h1>
-        <p>July 23, 2024</p>
+        <p> <CalendarMonthIcon className={styles.calendarMonthIcon}/> July 23, 2024</p>
     </div>
 )
 }
@@ -14,14 +18,14 @@ function BreakingNews() {
     <div className={styles.breakingContainer}>
       <div className={styles.breakingHead}>
         <h1>
-          <i>🛜</i> Breaking News
+          <i className={styles.breakingIcon}><WifiRoundedIcon /></i> Breaking News
         </h1>
       </div>
-      <div className={styles.breakingcardContainer}>
+      <Marquee className={styles.breakingcardContainer}>
         <Breakingcard />
         <Breakingcard />
         <Breakingcard />
-      </div>
+      </Marquee>
     </div>
     <hr className={styles.hrline}/>
     </>

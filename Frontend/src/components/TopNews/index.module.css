@@ -1,0 +1,102 @@
+#topNews {
+  /* height: 100px; */
+  /* background-color: rgb(239, 212, 212); */
+  width: 100%;
+  display: flex;
+  gap: 1.5rem;
+  height: fit-content;
+  margin-top: 3rem;
+
+}
+#topNews .topNewsCol1 {
+  width: 50%;
+  /* background-color: rgb(209, 236, 209); */
+  height: 100%;
+}
+.eachSlideEffect{
+  height: 100%;
+}
+.eachSlideEffect > div {
+  display: flex;
+  align-items: end;
+  justify-content: center;
+  background-size: cover;
+  height: 530px;
+  overflow: hidden;
+  position: relative;
+  padding: 1rem;
+}
+.eachSlideEffect > div::after{
+  content: '';
+  background: linear-gradient(180deg,rgba(255, 255, 255, 0),rgba(0, 0, 0, 1));
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+}
+
+.slideContentContainer{
+padding: 1rem;
+/* background-color: rgb(189, 243, 74); */
+display: flex;
+flex-direction: column;
+gap: 1rem;
+transform: translateY(110px);
+transition: .5s;
+position: relative;
+z-index: 2;
+
+}
+.eachSlideEffect:hover .slideContentContainer{
+  transform: translateY(0);
+}
+.slideContentContainer .category{
+  background-color:rgba(255, 255, 255, 0.17);
+  width: fit-content;
+  padding: 2px 8px;
+  font-size: .8rem;
+  color: rgb(217, 214, 214);
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+.slideContentContainer .category svg{
+  font-size: .9rem;
+}
+.slideContentContainer h1{
+  font-size: 1.4rem;
+  color: white;
+}
+.slideContentContainer p{
+  font-family: inter;
+  font-weight: 300;
+  color: white;
+  font-size: .8rem;
+  display: flex;
+  align-items: center;
+}
+.slideContentContainer p .calendarMonthIcon{
+  font-size: 1rem;
+  color: var(--secondaryclr);
+  margin-right: 10px;
+}
+.hrline{
+  border: 1px solid rgba(255, 255, 255, 0.377);
+  margin: 1rem 0;
+}
+.slideContentContainer button{
+  background-color: var(--primaryclr);
+  width: fit-content;
+  padding: .5rem 1rem ;
+  color: white;
+}
+.slideContentContainer button .arrowForwardRoundedIcon{
+  font-size: 1rem;
+}
+.topNewsCol2{
+  display: flex;
+  gap: 1rem;
+  width: 100%;
+  flex-wrap: wrap;
+}

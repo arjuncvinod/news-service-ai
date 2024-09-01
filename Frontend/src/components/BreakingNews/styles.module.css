@@ -9,13 +9,23 @@
 .breakingHead h1{
     font-size: 1.6rem;
 }
+.breakingIcon{
+    color: var(--primaryclr);
+}
+.breakingIcon svg{
+    rotate: 45deg;
+    scale: 1.3;
+    margin-right: 5px;
+}
 .breakingcardContainer{
     display: flex;
     align-items: center;
-    gap: 1.5rem;
+    gap: 0rem;
     width: 75%;
     flex-direction:row;
     overflow-x: scroll;
+    /* background-color: red; */
+    z-index: 0;
 }
 .breakingcardContainer::-webkit-scrollbar{
     display: none;
@@ -27,6 +37,8 @@
     padding-left: 1rem;
     /* background-color: green; */
     width: fit-content;
+    margin: 0 1rem;
+
 }
 .breakingcard::before{
     content: '';
@@ -38,7 +50,29 @@
 }
 .breakingcard h1{
 text-wrap: nowrap;
+font-family: inter;
+font-weight: 500;
+color: var(--black);
+font-size: 1rem;
 }
+.breakingcard p{
+    font-family: inter;
+    font-weight: 300;
+    color: var(--gray);
+    font-size: .8rem;
+    display: flex;
+    align-items: center;
+}
+.breakingcard p .calendarMonthIcon{
+    font-size: 1rem;
+    color: var(--gray);
+    margin-right: 10px;
+}
+.breakingcard 
+
 .hrline{
     border: 1px solid rgba(0, 0, 0, 0.07);
 }
+
+
+
