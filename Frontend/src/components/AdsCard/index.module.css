@@ -1,0 +1,40 @@
+.adsCard{
+    position: relative;
+    width: 100%;
+    height: 200px;
+    overflow: hidden;
+    margin: 5rem 0;
+    padding: 0 3rem;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+.adsCard::after{
+    position: absolute;
+    top: 0;
+    left: 0;
+    content: '';
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.48);
+    z-index: -1;
+}
+.adsCard img{
+    position: absolute;
+    top: 0;
+    left: 0;
+    object-fit: cover;
+    height: 200px;
+    width: 100%;
+    z-index: -1;
+}
+.adsCard h1{
+    color: white;
+    font-size: 2rem;
+    font-weight: 500;
+}
+.adsCard h3{
+    color: #bddc00;
+    text-transform: uppercase;
+    font-family: inter;
+}

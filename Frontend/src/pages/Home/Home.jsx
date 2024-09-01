@@ -17,7 +17,7 @@ function App() {
           const sortedArticles = response.data.data.sort(
             (a, b) => new Date(b.publishedAt) - new Date(a.publishedAt)
           );
-          setArticles(sortedArticles.slice(0, 21));
+          setArticles(sortedArticles);
         } catch (error) {
           console.error("Error fetching the news:", error);
           axios.post("http://localhost:3000/news/save")

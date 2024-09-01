@@ -1,0 +1,34 @@
+.categorySection{
+    
+}
+.categorySection .heading{
+    width: 100%;
+    display: flex;
+}
+.categorySection .heading h1{
+    font-size: 2.3rem;
+    position: relative;
+    font-weight: 600;
+    color: var(--black);
+    width: fit-content;
+    text-wrap: nowrap;
+}
+.categorySection .heading span{
+    position: relative;
+    width: 100%;
+}
+.categorySection .heading span::after{
+    content: '';
+    width: 98%;
+    background-color: #dcdcde;
+    height: 10px;
+    position: absolute;
+    top: 50%;
+    right: 0;
+}
+.newsContainer{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    margin: 2rem 0;
+}
