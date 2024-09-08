@@ -4,7 +4,7 @@ import styles from "./Home.module.css";
 import { getDate } from "../../services/functions";
 import LogoutButton from "../../components/Logout/Logout";
 import Loader from "../../components/Loader/Loader";
-function App() {
+function OldHome() {
   const [articles, setArticles] = useState(null);
   const [query, setQuery] = useState("india");
   const deImage =
@@ -78,7 +78,7 @@ function App() {
                 </p>
               </li>
               <li>
-                <button onClick={()=>{axios.post("https://news-service-api.vercel.app/news/save")}}>Update news</button>
+                <button onClick={()=>{axios.post(" ")}}>Update news</button>
               </li>
               <li>
                 <LogoutButton />
@@ -124,4 +124,4 @@ function App() {
   );
 }
 
-export default App;
+export default OldHome

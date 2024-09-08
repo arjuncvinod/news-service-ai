@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../../services/firebase";
+import { auth, db } from "../../services/firebase";
+import { doc, getDoc } from "firebase/firestore";
 import toast from "react-hot-toast";
-
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
@@ -15,15 +15,33 @@ const LoginPage = () => {
 
     toast.promise(
       (async () => {
-        await signInWithEmailAndPassword(auth, email, password);
-        return 'Login successful'; 
+        // Sign in with Firebase Authentication
+        const userCredential = await signInWithEmailAndPassword(auth, email, password);
+        const user = userCredential.user;
+
+        // Check if the user exists in Firestore
+        const userDocRef = doc(db, 'users', user.uid);
+        const userDoc = await getDoc(userDocRef);
+
+        if (userDoc.exists()) {
+          const userData = userDoc.data();
+          const role = userData.role; // Assume 'role' is a field in the Firestore user document
+
+          // Redirect based on the role
+          if (role === 'admin') {
+            navigate("/dashboard");
+          } else {
+            navigate("/home");
+          }
+
+          return 'Login successful';
+        } else {
+          throw new Error('User not found in Firestore');
+        }
       })(),
       {
         loading: 'Logging in...',
-        success: (data) => {
-          navigate("/home");
-          return data; 
-        },
+        success: (data) => data,
         error: (error) => {
           console.error('Error during login:', error);
           switch (error.code) {

@@ -2,7 +2,7 @@ import styles from "./index.module.css";
 
 import logo from "../../assets/Home/logo.svg";
 
-import EmailIcon from "@mui/icons-material/Email";
+// import EmailIcon from "@mui/icons-material/Email";
 import FacebookIcon from "@mui/icons-material/Facebook";
 import InstagramIcon from "@mui/icons-material/Instagram";
 import XIcon from "@mui/icons-material/X";
@@ -10,22 +10,24 @@ import YouTubeIcon from "@mui/icons-material/YouTube";
 import MenuIcon from '@mui/icons-material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
 import CustomDropdown from "../Dropdown";
+import LogoutButton from "../Logout/Logout";
 
 function NavBar() {
   return (
     <nav id={styles.nav}>
       <div className={styles.navRow1}>
         <div className={styles.buttonContainer}>
-          <button>
+          {/* <button>
             Subscribe <EmailIcon className={styles.mailIcon} />
-          </button>
+          </button> */}
+          <LogoutButton/>
         </div>
-        <div className={styles.logoContainer}>
+        <a href="/" className={styles.logoContainer}>
           <img src={logo} alt="" />
           <h1>
             ew <span>s</span>cad<span>e</span>{" "}
           </h1>
-        </div>
+        </a>
         <div className={styles.socialContainer}>
           <div className={styles.socials}>
             <i className={styles.icon}>
@@ -50,11 +52,11 @@ function NavBar() {
         </div>
         <div className={styles.categoriesContainer}>
        
-        <CustomDropdown />
-        <CustomDropdown />
-        <CustomDropdown />
-        <CustomDropdown />
-        <CustomDropdown />
+        <CustomDropdown category={"India"}/>
+        <CustomDropdown category={"Kerala"}/>
+        <CustomDropdown category={"Education"} />
+        <CustomDropdown category={"Lifestyle"}/>
+        <CustomDropdown category={"Politics"}/>
         </div>
         <div className={styles.searchContainer}>
             <div className={styles.inputContainer}>

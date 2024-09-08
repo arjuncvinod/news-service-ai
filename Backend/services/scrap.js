@@ -5,19 +5,14 @@ const scrapNews = async (category) => {
   const url = `https://indianexpress.com/section/${category}/`;
 
   function cleanContent(content) {
-    let cleanedContent = content
-      .replace(/Advertisement/g, '')
-      .replace(/\t/g, ' ')
-      .replace(/\n/g, ' ')
-      .replace(/\+/g, ' ')
-      .replace(/\s\s+/g, ' ')
-      .replace(/and get latest news and updates/g, '')
-      .trim();
-    
-    cleanedContent = cleanedContent.replace(/Click here to join.*?on WhatsApp/g, '');
-    
-    return cleanedContent.trim();
+    return content
+      .replace(/Advertisement|\t|\n|\+|and get latest news and updates/g, ' ')
+      .replace(/📣 For more lifestyle news, click here to join our WhatsApp Channel and also follow us on Instagram/g, '')
+      .replace(/Click here to join.*?on WhatsApp/g, '')
+      .replace(/\s\s+/g, ' ')  // Collapses multiple spaces into one
+      .trim();  // Final trim to remove any leading or trailing spaces
   }
+
 
   try {
     const response = await axios.get(url);

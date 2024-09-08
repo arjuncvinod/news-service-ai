@@ -13,14 +13,13 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// Function to fetch news by category
 const fetchNewsByCategory = async (category) => {
-  const yesterdayDate = format(subDays(new Date(), 1), 'yyyy-MM-dd');
+  const today = format(new Date(), 'yyyy-MM-dd');
 
   const newsData = await scrapNews(category);
 
   return newsData.map(article => ({
-    publishedAt: yesterdayDate,
+    publishedAt: today,
     title: article.title,
     description: article.summary,
     urlToImage: article.image,
@@ -29,7 +28,6 @@ const fetchNewsByCategory = async (category) => {
   }));
 };
 
-// Route to save news data from the News API to the database
 app.post('/news/save', async (req, res) => {
   try {
     const todayDate = format(new Date(), 'yyyy-MM-dd');
@@ -58,7 +56,7 @@ app.post('/news/save', async (req, res) => {
   }
 });
 
-// Custom route to retrieve news data by date and category using query parameters
+
 app.get('/news', async (req, res) => {
   try {
     const { date, category } = req.query;
@@ -90,7 +88,36 @@ app.get('/news', async (req, res) => {
     res.status(500).send({ error: 'Failed to retrieve news' });
   }
 });
+app.get('/news/by-title', async (req, res) => {
+  try {
+    const { title } = req.query;
 
+    if (!title) {
+      return res.status(400).send({ error: 'Title query parameter is required' });
+    }
+
+  
+    const todayDate = format(new Date(), 'yyyy-MM-dd');
+    const newsDoc = await db.collection('news').doc(todayDate).get();
+
+    if (newsDoc.exists) {
+      const articles = newsDoc.data().articles;
+
+      const article = articles.find(article => article.title === decodeURIComponent(title));
+
+      if (article) {
+        res.send({ message: 'News article retrieved successfully', data: article });
+      } else {
+        res.status(404).send({ message: `No news article found with the title: ${title}` });
+      }
+    } else {
+      res.status(404).send({ message: `No news data found for the date: ${todayDate}` });
+    }
+  } catch (error) {
+    console.error('Error retrieving news by title:', error);
+    res.status(500).send({ error: 'Failed to retrieve news article' });
+  }
+});
 app.get('/', async (req, res) => {
   res.send('API is live');
 });

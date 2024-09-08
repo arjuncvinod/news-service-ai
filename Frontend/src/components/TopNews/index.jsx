@@ -1,64 +1,146 @@
-import styles from "./index.module.css"
-import { Slide } from 'react-slideshow-image';
-import BookmarkBorderRoundedIcon from '@mui/icons-material/BookmarkBorderRounded';
-import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
-import ArrowForwardRoundedIcon from '@mui/icons-material/ArrowForwardRounded';
-import {NewsCard1} from "../NewsCards";
+import { useState, useEffect } from "react";
+import styles from "./index.module.css";
+import { Slide } from "react-slideshow-image";
+import axios from "axios";
+import BookmarkBorderRoundedIcon from "@mui/icons-material/BookmarkBorderRounded";
+import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
+import ArrowForwardRoundedIcon from "@mui/icons-material/ArrowForwardRounded";
+import { NewsCard1 } from "../NewsCards";
+import Loader from "../Loader/Loader";
+import { getDate } from "../../services/functions";
+
+const categories = [
+  "lifestyle",
+  "india",
+  "business",
+  "education",
+  "political-pulse",
+  "kerala",
+];
+
 function TopNews() {
-    const images = [
-        "https://images.unsplash.com/photo-1509721434272-b79147e0e708?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1500&q=80",
-        "https://images.unsplash.com/photo-1506710507565-203b9f24669b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1536&q=80",
-        "https://images.unsplash.com/photo-1536987333706-fc9adfb10d91?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1500&q=80",
-    ];
+  const [newsData1, setNewsData1] = useState([]);
+  const [newsData2, setNewsData2] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  // const getDate = () => {
+  //   const today = new Date();
+  //   return today.toISOString().split('T')[0]; // returns date in yyyy-mm-dd format
+  // };
+
+  useEffect(() => {
+    const fetchNews = async () => {
+      try {
+        const newsPromises = categories.map(async (category) => {
+          const url = `http://localhost:3000/news?date=${getDate()}&category=${category}`;
+          const { data } = await axios.get(url);
+          return data.data?.[0]; // Optional chaining for safety
+        });
+
+        const newsResults = await Promise.all(newsPromises);
+        setNewsData1(newsResults.filter(Boolean)); // Filters out any undefined/null responses
+      } catch (error) {
+        console.error("Error fetching news:", error);
+      } finally {
+        setLoading(false); // Stop the loading indicator
+      }
+    };
+
+    fetchNews();
+  }, []); // Removed categories from dependency array as it doesn't change
+
+  useEffect(() => {
+    const fetchNews = async () => {
+      try {
+        const response = await axios.get(`http://localhost:3000/news`, {
+          params: {
+            date: getDate(),
+            category: "all"
+          }
+        });
+        setNewsData2(response.data.data || []); // Ensures newsData2 is an array
+      } catch (err) {
+        console.log(err);
+      }
+    };
+
+    fetchNews();
+  }, []); 
+  const shuffleArray = (array) => {
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]]; // Swap elements
+    }
+    return array;
+  };
   return (
     <div id={styles.topNews}>
-        <div className={styles.topNewsCol1}>
-        <Slide arrows={false} infinite={true} autoplay={true} duration={2000} pauseOnHover={true} >
-            <div className={styles.eachSlideEffect}>
-                <div style={{ 'backgroundImage': `url(${images[0]})` }}>
-                    <div className={styles.slideContentContainer}>
-                        <h3 className={styles.category}><BookmarkBorderRoundedIcon/> Category</h3>
-                        <h1>The Rise of Wellness Retreats: Finding Peace in a Busy World</h1>
-                        <p> <CalendarMonthIcon className={styles.calendarMonthIcon}/> July 23, 2024</p>
+      {loading ? (
+     <Loader />
+      ) : (
+        <>
+          <div className={styles.topNewsCol1}>
+            {newsData1.length > 0 ? (
+              <Slide
+                arrows={false}
+                infinite={true}
+                autoplay={true}
+                duration={3000} // Increased duration for smoother transitions
+                pauseOnHover={true}
+              >
+                {newsData1.map((news, index) => (
+                  <div key={index} className={styles.eachSlideEffect}>
+                    <div
+                      className={styles.slideImage}
+                      style={{ backgroundImage: `url(${news?.urlToImage})` }}
+                    >
+                      <div className={styles.slideContentContainer}>
+                        <h3 className={styles.category}>
+                          <BookmarkBorderRoundedIcon /> {news?.category}
+                        </h3>
+                        <h1>{news?.title}</h1>
+                        <p>
+                          <CalendarMonthIcon
+                            className={styles.calendarMonthIcon}
+                          />
+                          {new Date(news?.publishedAt).toDateString()}
+                        </p>
                         <hr className={styles.hrline} />
-                        <button>Read more <ArrowForwardRoundedIcon className={styles.arrowForwardRoundedIcon}/></button>
+                        <a href={`/news/${encodeURIComponent(news.title)}`}>
+                        <button>
+                          Read more
+                          <ArrowForwardRoundedIcon
+                            className={styles.arrowForwardRoundedIcon}
+                          />
+                        </button>
+                        </a>
+                      </div>
                     </div>
-                </div>
-            </div>
-            <div className={styles.eachSlideEffect}>
-                <div style={{ 'backgroundImage': `url(${images[1]})` }}>
-                    <div className={styles.slideContentContainer}>
-                        <h3 className={styles.category}><BookmarkBorderRoundedIcon/> Category</h3>
-                        <h1>The Rise of Wellness Retreats: Finding Peace in a Busy World</h1>
-                        <p> <CalendarMonthIcon className={styles.calendarMonthIcon}/> July 23, 2024</p>
-                        <hr className={styles.hrline} />
-                        <button>Read more <ArrowForwardRoundedIcon className={styles.arrowForwardRoundedIcon} /></button>
-                    </div>
-                </div>
-            </div>
-            <div className={styles.eachSlideEffect}>
-                <div style={{ 'backgroundImage': `url(${images[2]})` }}>
-                    <div className={styles.slideContentContainer}>
-                        <h3 className={styles.category}><BookmarkBorderRoundedIcon/> Category</h3>
-                        <h1>The Rise of Wellness Retreats: Finding Peace in a Busy World</h1>
-                        <p> <CalendarMonthIcon className={styles.calendarMonthIcon}/> July 23, 2024</p>
-                        <hr className={styles.hrline} />
-                        <button>Read more <ArrowForwardRoundedIcon className={styles.arrowForwardRoundedIcon}/></button>
-                    </div>
-                </div>
-            </div>
-        </Slide>
-        </div>
-        <div className={styles.topNewsCol2}>
-            <NewsCard1 /> 
-            <NewsCard1 /> 
-            <NewsCard1 /> 
-            <NewsCard1 /> 
-        </div>
-
-
+                  </div>
+                ))}
+              </Slide>
+            ) : (
+              <p>No news available for today.</p>
+            )}
+          </div>
+          <div className={styles.topNewsCol2}>
+          {newsData2.length > 0 ? (
+             shuffleArray(newsData2).slice(3, 7).map((item, index) => (
+                <NewsCard1 
+                  key={index}
+                  imageUrl={item.urlToImage} 
+                  title={item.title} 
+                  date={item.publishedAt} 
+                />
+              ))
+            ) : (
+              <p>No additional news available.</p>
+            )}
+          </div>
+        </>
+      )}
     </div>
-  )
+  );
 }
 
 export default TopNews;

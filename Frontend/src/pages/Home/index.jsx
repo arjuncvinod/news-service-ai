@@ -4,7 +4,7 @@ import BreakingNews from "../../components/BreakingNews"
 import TopNews from "../../components/TopNews"
 import AdsCard from "../../components/AdsCard"
 import CategorySection from "../../components/CategorySection"
-function NewHome() {
+function Home() {
   return (
     <>
       <NavBar />
@@ -12,10 +12,8 @@ function NewHome() {
       <TopNews />
       <AdsCard />
       <CategorySection />
-      <CategorySection />
-
     </>
   )
 }
 
-export default NewHome
+export default Home

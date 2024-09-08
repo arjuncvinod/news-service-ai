@@ -1,0 +1,91 @@
+/* index.module.css */
+.manageNews {
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  
+  .title {
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #333;
+  }
+  
+  .controls {
+    margin-bottom: 20px;
+  }
+  
+  .label {
+    font-size: 16px;
+    margin-right: 10px;
+    color: #555;
+  }
+  
+  .dateInput {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-right: 10px;
+    font-size: 16px;
+  }
+  
+  .fetchButton {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    background-color: #007bff;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .fetchButton:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+  }
+  
+  .fetchButton:hover:not(:disabled) {
+    background-color: #0056b3;
+  }
+  
+  .newsList {
+    margin-top: 20px;
+  }
+  
+  .newsItem {
+    padding: 15px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .newsItemTitle {
+    font-size: 20px;
+    margin-bottom: 10px;
+    color: #333;
+  }
+  
+  .newsItemDescription {
+    font-size: 16px;
+    color: #666;
+  }
+  
+  .newsImage {
+    max-width:20%;
+    height: auto;
+    border-radius: 4px;
+    margin-top: 10px;
+  }
+  
+  .noNewsMessage {
+    font-size: 16px;
+    color: #666;
+    margin-top: 20px;
+  }
+  

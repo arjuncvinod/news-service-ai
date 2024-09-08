@@ -1,29 +1,40 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
-import { auth } from './services/firebase'; // Ensure this import is correct
+import { auth } from './services/firebase';
 import LoginPage from './pages/Login/index';
 import RegisterPage from './pages/Register';
 import Dashboard from './pages/Dashboard/index';
-import Home from './pages/Home/Home';
-import NewHome from "./pages/Home/index"
-import Loader from './components/Loader/Loader';
+import Home from './pages/Home/index';
+import OldHome from './pages/Home/Home'
+import NewsViewPage from './pages/ViewNews';
+import AdminDashboard from './pages/Dashboard/index';
+import Category from "./pages/Category"
 import './App.css';
+import Loader from './components/Loader/Loader';
+import { LoadContext } from './Contexts/LoaderContext';
 
 const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(null);
+  const { loading, setLoading } = useContext(LoadContext);
 
   useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged(user => {
+    const unsubscribe = auth.onAuthStateChanged((user) => {
       setIsAuthenticated(!!user); // Convert user to a boolean
+      setLoading(false); // Assuming loading is true while checking authentication
     });
 
-    // Clean up the subscription on unmount
-    return () => unsubscribe();
-  }, []);
+    // Set loading to true before checking authentication
+    setLoading(true);
 
-  if (isAuthenticated === null) {
-    return <Loader/>
+    return () => {
+      unsubscribe();
+      setLoading(false);
+    };
+  }, [setLoading]);
+
+  if (loading) {
+    return <Loader />;
   }
 
   return (
@@ -47,15 +58,18 @@ const App = () => {
             path="/home"
             element={isAuthenticated ? <Home /> : <Navigate to="/login" />}
           />
+          <Route path="/news/:newsTitle" element={isAuthenticated ? <NewsViewPage /> : <Navigate to="/login" />} />
           <Route
             path="*"
-            element={<Navigate to={isAuthenticated ? "/home" : "/login"} />}
+            element={<Navigate to={isAuthenticated ? '/home' : '/login'} />}
           />
-          <Route
-            path="/newhome"
-            element={<NewHome />}
+           <Route
+            path="/news/category"
+            element={isAuthenticated ? <Category /> : <Navigate to="/login" />}
+          />
+          <Route path="/oldhome" element={<OldHome />} />
 
-            />
+          <Route path="/admin/*" element={<AdminDashboard />} />
         </Routes>
       </div>
     </Router>
@@ -63,4 +77,3 @@ const App = () => {
 };
 
 export default App;
-
