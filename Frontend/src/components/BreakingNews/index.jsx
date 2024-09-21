@@ -27,6 +27,7 @@ function BreakingNews() {
     const fetchArticles = async () => {
       try {
         const response = await axios.get("https://newsapi.org/v2/top-headlines?sortBy=publishedAt&language=en&apiKey=e51c92df1b7f4549a04cf9453900d8f1");
+        
         if (response.data.articles.length > 0) {
           setArticles(response.data.articles);
         }
@@ -37,8 +38,9 @@ function BreakingNews() {
 
     fetchArticles();
   }, []);
-  const filteredArticles = articles.filter(article => article.source.name === 'Google News');
-
+  // const filteredArticles = articles.filter(article => article.source.name === 'BBC News');
+  // console.log(filteredArticles);
+  
 
   return (
     <>
@@ -50,7 +52,7 @@ function BreakingNews() {
       </div>
       <Marquee className={styles.breakingcardContainer} speed={100}>
 
-        {filteredArticles.map((article, index) => (
+        {articles.map((article, index) => (
             <Breakingcard
               key={index}
               title={article.title.split('-')[0].trim()}

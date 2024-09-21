@@ -27,4 +27,17 @@ function NewsCard2({ imageUrl, title, date, description }) {
       </a>
   );
 }
-export {NewsCard1,NewsCard2}
+
+function NewsCard3 ({imageUrl, title}){
+  return(
+    <a href={`/news/${encodeURIComponent(title)}`} className={styles.newsCard3}>
+      <div className={styles.imageContainer}>
+        <img src={imageUrl} alt={title} />
+      </div>
+      <div className={styles.titleContainer}>
+        <p>{title}</p>
+      </div>
+    </a>
+  )
+}
+export {NewsCard1,NewsCard2,NewsCard3}

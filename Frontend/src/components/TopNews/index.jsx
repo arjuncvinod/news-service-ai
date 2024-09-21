@@ -7,14 +7,14 @@ import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import ArrowForwardRoundedIcon from "@mui/icons-material/ArrowForwardRounded";
 import { NewsCard1 } from "../NewsCards";
 import Loader from "../Loader/Loader";
-import { getDate } from "../../services/functions";
+import { getDate,shuffleArray } from "../../services/functions";
 
 const categories = [
   "lifestyle",
   "india",
   "business",
   "education",
-  "political-pulse",
+  "politics",
   "kerala",
 ];
 
@@ -31,23 +31,23 @@ function TopNews() {
   useEffect(() => {
     const fetchNews = async () => {
       try {
-        const newsPromises = categories.map(async (category) => {
-          const url = `http://localhost:3000/news?date=${getDate()}&category=${category}`;
-          const { data } = await axios.get(url);
-          return data.data?.[0]; // Optional chaining for safety
+        const url = `http://localhost:3000/news?date=${getDate()}&category=all`;
+        const { data } = await axios.get(url);
+        const newsByCategory = categories.map((category) => {
+          const filteredNews = data.data?.filter((newsItem) => newsItem.category === category);
+          return filteredNews?.[0]; 
         });
-
-        const newsResults = await Promise.all(newsPromises);
-        setNewsData1(newsResults.filter(Boolean)); // Filters out any undefined/null responses
+  
+        setNewsData1(newsByCategory.filter(Boolean)); 
       } catch (error) {
         console.error("Error fetching news:", error);
       } finally {
-        setLoading(false); // Stop the loading indicator
+        setLoading(false);
       }
     };
-
+  
     fetchNews();
-  }, []); // Removed categories from dependency array as it doesn't change
+  }, []);
 
   useEffect(() => {
     const fetchNews = async () => {
@@ -66,13 +66,7 @@ function TopNews() {
 
     fetchNews();
   }, []); 
-  const shuffleArray = (array) => {
-    for (let i = array.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [array[i], array[j]] = [array[j], array[i]]; // Swap elements
-    }
-    return array;
-  };
+
   return (
     <div id={styles.topNews}>
       {loading ? (

@@ -24,7 +24,7 @@ const fetchNewsByCategory = async (category) => {
     description: article.summary,
     urlToImage: article.image,
     content: article.content,
-    category: category,
+    category: category==="political-pulse"?"politics":category,
   }));
 };
 

@@ -1,33 +1,16 @@
-.newsViewPage {
+/* .newsViewPage {
     display: flex;
     padding: 20px;
     background-color: #f5f5f5;
-    position: relative; /* This allows the button to be positioned relative to this container */
+    position: relative; 
   }
   
-  .backButton {
-    position: fixed; /* Make the button fixed to the viewport */
-    top: 20px;
-    left: 20px;
-    background:white;
-    color: var(--primaryclr);
-    border: 1px solid transparent;
-    border-radius: 5px;
-    padding: 10px 15px;
-    cursor: pointer;
-    font-size: 1rem;
-    z-index: 1000; /* Ensure the button is on top of other content */
-  }
   
-  .backButton:hover {
-    box-shadow: 0px 0px 10px rgb(239, 238, 238);
-    border:1px solid var(--primaryclr)
-  }
   
   .mainContent {
     flex: 3;
-    max-width: 800px;
-    margin-left: 60px; /* Provide space for the fixed back button */
+    max-width: 1000px;
+    margin-left: 60px;
   }
   
   .sidebar {
@@ -125,4 +108,121 @@
     color: #666;
     text-align: center;
   }
+   */
+
+   .newsViewContainer{
+    display: flex;
+    height: fit-content;/*changes needed*/
+    max-width: 100%;
+    flex-direction: row;
+    gap: 5%;
+
+   }
+   .backButton {
+    position: fixed; 
+    top: 20px;
+    left: 20px;
+    background:white;
+    color: var(--primaryclr);
+    border: 1px solid transparent;
+    border-radius: 5px;
+    padding: 10px 15px;
+    cursor: pointer;
+    font-size: 1rem;
+    z-index: 1000;
+  }
   
+  .backButton:hover {
+    box-shadow: 0px 0px 10px rgb(239, 238, 238);
+    border:1px solid var(--primaryclr)
+  }
+   .mainContent{
+    /* background-color: red; */
+    height: fit-content;
+    width: 70%;
+   }   
+   .mainContent .imageContainer{
+      width: 100%;
+      overflow: hidden;
+   }
+   .mainContent .imageContainer img{
+    width: 100%;
+    transition: .3s;
+   }
+   .mainContent .imageContainer img:hover{
+    scale: 1.02;
+   }
+   .sideBar{
+    /* background-color: green; */
+    width: 25%;
+   }
+   .titleContainer{
+    padding: 1rem 0; 
+   }
+   .titleContainer h1{
+    font-size: 2.5rem;
+    letter-spacing: 0px;
+    font-weight: 600;
+    color: var(--black);
+   }
+   .newsInfo{
+    display: flex;
+    gap: 1rem;
+    padding: .5rem 0;
+    position: relative;
+   }
+   .newsInfo p{
+    font-family: inter;
+    font-weight: 300;
+    color: var(--gray);
+    font-size: .8rem;
+    display: flex;
+    align-items: center;
+  }
+.newsInfo .date .calendarMonthIcon{
+    font-size: 1rem;
+    color: var(--gray);
+    margin-right: 10px;
+}
+
+.newsInfo p .accessTimeIcon{
+  font-size: 1rem;
+  color: var(--gray);
+  margin-right: 5px;
+}
+.newsInfo p .translateIcon{
+  font-size: 1rem;
+  color: var(--gray);
+  margin-right: 5px;
+}
+.newsInfo p .autoAwesomeIcon{
+  font-size: 1rem;
+  color: var(--gray);
+  margin-right: 5px;
+}
+.newsInfo p button{
+  display: flex;
+  align-items: center;
+}
+.newsInfo .readButton{
+  position: absolute;
+  right: 0;
+}
+.newsInfo p button .readIcon{
+  font-size: 1.2rem;
+  color: var(--gray);
+  margin-left: 5px;
+}
+.select{
+  background-color: transparent;
+  outline: none;
+  max-width: 100px;
+}
+.mainContent .newsContent{
+  font-size: 1.1rem;
+  color: var(--black);
+  text-align: justify;
+  line-height: 1.8rem;
+  position: relative;
+  min-height: 10vh;
+}

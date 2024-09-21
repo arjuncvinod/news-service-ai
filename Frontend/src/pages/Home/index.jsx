@@ -11,7 +11,7 @@ function Home() {
       <BreakingNews />
       <TopNews />
       <AdsCard />
-      <CategorySection />
+      <CategorySection  />
     </>
   )
 }

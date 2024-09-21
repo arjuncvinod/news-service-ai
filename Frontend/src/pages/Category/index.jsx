@@ -4,7 +4,6 @@ import NavBar from "../../components/NavBar";
 
 export default function Index() {
   const { cat } = useParams(); // Destructure the 'category' param from useParams
-
   return (
     <div>
       <NavBar />

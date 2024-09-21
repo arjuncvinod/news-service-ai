@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import styles from './index.module.css';
 import { NewsCard2 } from "../NewsCards";
-import { getDate } from '../../services/functions';
+import { getDate,shuffleArray} from '../../services/functions';
 export default function CategorySection({cat}) {
   const [newsData2, setNewsData2] = useState([]);
 
@@ -16,6 +16,8 @@ export default function CategorySection({cat}) {
 
   useEffect(() => {
     const fetchNews = async () => {
+    
+      
       try {
         const response = await axios.get(`http://localhost:3000/news`, {
           params: {
@@ -30,18 +32,17 @@ export default function CategorySection({cat}) {
     };
 
     fetchNews();
-  }, []);
+  }, [cat]);
 
   return (
     <div className={styles.categorySection}>
       <div className={styles.heading}>
-        <h1>Recent News</h1> 
+        <h1>{cat || "Recent News"}</h1> 
         <span></span>
       </div>
       <div className={styles.newsContainer}>
-      {console.log(newsData2)}
         {newsData2.length > 0 ? (
-          newsData2.map((item, index) => (
+          shuffleArray(newsData2).map((item, index) => (
             <NewsCard2
               key={index}
               imageUrl={item.urlToImage}

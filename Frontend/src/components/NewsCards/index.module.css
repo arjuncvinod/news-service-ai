@@ -94,3 +94,34 @@
 .newsCard2 .ArrowRightAltIcon{
     font-size: .6rem;
 }
+
+
+.newsCard3{
+    display: flex;
+    width: 100%;
+    margin-bottom: 10px;
+    gap: 10px;
+    background-color: white;
+    padding: 10px;
+
+    box-shadow: 0px 0px 10px rgb(235, 229, 229);
+}
+.newsCard3 .imageContainer{
+    width: 100px;
+    height: 100%;
+}
+.newsCard3 .imageContainer img{
+    object-fit: cover;
+    height: 100px;
+    width: 100px;
+}
+.newsCard3 .titleContainer{
+    font-size: .9rem;
+    width: 70%;
+    text-align: start;
+    color: var(--gray);
+}
+.newsCard3 .titleContainer p{
+    font-family: inter;
+    text-align: start;
+}
