@@ -12,7 +12,7 @@ function AdminDashboard() {
     const toastId = toast.loading("Fetching news...");
   
     try {
-     await axios.post("http://localhost:3000/news/save");     
+     await axios.post(`${import.meta.env.VITE_API}/news/save`);     
       toast.success("News fetched successfully");
       toast.dismiss(toastId);
     } catch (error) {

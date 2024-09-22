@@ -33,7 +33,7 @@ function NewsViewPage() {
     const fetchNews = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:3000/news/by-title`,
+          `${import.meta.env.VITE_API}/news/by-title`,
           {
             params: {
               title: newsTitle,
@@ -56,7 +56,7 @@ function NewsViewPage() {
 
     const fetchSidebarNews = async () => {
       try {
-        const response = await axios.get(`http://localhost:3000/news`, {
+        const response = await axios.get(`${import.meta.env.VITE_API}/news`, {
           params: {
             date: date || getDate(),
             category: category || "all", // Fetch news based on the category

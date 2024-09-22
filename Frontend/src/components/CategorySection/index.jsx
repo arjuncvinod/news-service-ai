@@ -19,7 +19,7 @@ export default function CategorySection({cat}) {
     
       
       try {
-        const response = await axios.get(`http://localhost:3000/news`, {
+        const response = await axios.get(`${import.meta.env.VITE_API}/news`, {
           params: {
             date: getDate(),
             category: cat || "all",

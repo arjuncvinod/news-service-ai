@@ -10,7 +10,7 @@ function ManageNews() {
   const fetchNews = async () => {
     try {
       setLoading(true);
-      const response = await axios.get(`http://localhost:3000/news`, {
+      const response = await axios.get(`${import.meta.env.VITE_API}/news`, {
         params: {
           date: date,
           category: "all"

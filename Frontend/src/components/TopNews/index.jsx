@@ -31,7 +31,7 @@ function TopNews() {
   useEffect(() => {
     const fetchNews = async () => {
       try {
-        const url = `http://localhost:3000/news?date=${getDate()}&category=all`;
+        const url = `${import.meta.env.VITE_API}/news?date=${getDate()}&category=all`;
         const { data } = await axios.get(url);
         const newsByCategory = categories.map((category) => {
           const filteredNews = data.data?.filter((newsItem) => newsItem.category === category);
@@ -52,7 +52,7 @@ function TopNews() {
   useEffect(() => {
     const fetchNews = async () => {
       try {
-        const response = await axios.get(`http://localhost:3000/news`, {
+        const response = await axios.get(`${import.meta.env.VITE_API}/news`, {
           params: {
             date: getDate(),
             category: "all"
