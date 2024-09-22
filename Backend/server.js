@@ -5,6 +5,7 @@ import bodyParser from 'body-parser';
 import { db } from './firebase.js';
 import scrapNews from './services/scrap.js';
 import { format, subDays } from 'date-fns';
+import axios from 'axios';
 
 const app = express();
 const port = process.env.PORT;
@@ -38,7 +39,6 @@ app.post('/news/save', async (req, res) => {
     const keralaNews = await fetchNewsByCategory('kerala');
     const educationNews = await fetchNewsByCategory('education');
     const politicalNews = await fetchNewsByCategory('political-pulse');
-
     const allArticles = [...internationalNews, ...nationalNews,...businessyNews,...keralaNews,...educationNews,...politicalNews];
 
     if (allArticles.length > 0) {
@@ -56,6 +56,15 @@ app.post('/news/save', async (req, res) => {
   }
 });
 
+app.get('/breaking', async (req, res) => {
+  try {
+    const response = await axios.get('https://newsapi.org/v2/top-headlines?sortBy=publishedAt&language=en&apiKey=e51c92df1b7f4549a04cf9453900d8f1');
+    res.send(response.data); 
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Error fetching breaking news');
+  }
+});
 
 app.get('/news', async (req, res) => {
   try {

@@ -26,7 +26,7 @@ function BreakingNews() {
   useEffect(() => {
     const fetchArticles = async () => {
       try {
-        const response = await axios.get("https://newsapi.org/v2/top-headlines?sortBy=publishedAt&language=en&apiKey=e51c92df1b7f4549a04cf9453900d8f1");
+        const response = await axios.get(`${import.meta.env.VITE_API}/breaking`);
         
         if (response.data.articles.length > 0) {
           setArticles(response.data.articles);
