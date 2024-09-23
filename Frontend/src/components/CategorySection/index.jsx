@@ -3,10 +3,12 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import styles from './index.module.css';
 import { NewsCard2 } from "../NewsCards";
-import { getDate,shuffleArray} from '../../services/functions';
+import { getDate,shuffleArray} from '../../services/functions'; 
+  import AOS from 'aos'
+  import "aos/dist/aos.css";
 export default function CategorySection({cat}) {
   const [newsData2, setNewsData2] = useState([]);
-
+ 
   // const getDate = () => {
   //   const today = new Date();
   //   console.log(today);
@@ -15,6 +17,7 @@ export default function CategorySection({cat}) {
   // };
 
   useEffect(() => {
+      AOS.init({ duration: 750 });
     const fetchNews = async () => {
     
       

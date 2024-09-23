@@ -16,6 +16,8 @@ import SummariseText from "../../services/summarise";
 import { translateText } from "../../services/translate";
 import TranslationLanguages from "../../services/Data";
 import textToSpeech from "../../services/textToSpeech";
+import AOS from 'aos'
+import "aos/dist/aos.css";
 
 function NewsViewPage() {
   const { newsTitle, date } = useParams(); // Destructure both title and date from params
@@ -31,6 +33,7 @@ function NewsViewPage() {
 
   useEffect(() => {
     const fetchNews = async () => {
+      AOS.init({ duration: 750 })
       try {
         const response = await axios.get(
           `${import.meta.env.VITE_API}/news/by-title`,
@@ -132,9 +135,9 @@ function NewsViewPage() {
                 <Loader3 />
               </>
             ) : (
-              <h1>{newsHeading}</h1>
+              <h1 data-aos="fade-up">{newsHeading}</h1>
             )}
-            <div className={styles.newsInfo}>
+            <div className={styles.newsInfo} data-aos="fade-up">
               <p className={styles.date}>
                 <CalendarMonthIcon className={styles.calendarMonthIcon} />
                 {` ${news.publishedAt}`}
@@ -182,7 +185,7 @@ function NewsViewPage() {
               </p>
             </div>
           </div>
-          <div className={styles.newsContent}>
+          <div className={styles.newsContent} data-aos="fade-up">
             {translateLoader ? <Loader5 /> : <p>{newsContent}</p>}
           </div>
         </div>

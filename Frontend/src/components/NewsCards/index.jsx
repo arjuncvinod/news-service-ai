@@ -3,6 +3,7 @@ import styles from "./index.module.css"
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import ArrowRightAltIcon from '@mui/icons-material/ArrowRightAlt';
 
+import "aos/dist/aos.css";
 function NewsCard1({ imageUrl, title, date }) {
   return (
     <a href={`/news/${encodeURIComponent(title)} `} className={styles.newsCard1}>
@@ -14,8 +15,10 @@ function NewsCard1({ imageUrl, title, date }) {
 }
 
 function NewsCard2({ imageUrl, title, date, description }) {
+
   return (
-      <a href={`/news/${encodeURIComponent(title)}`} className={styles.newsCard2}>
+      <a href={`/news/${encodeURIComponent(title)}`} className={styles.newsCard2} data-aos="zoom-in-up"
+     data-aos-duration="500">
           <img src={imageUrl} alt={title} />
           <p><CalendarMonthIcon className={styles.calendarMonthIcon} /> {date}</p>
           <h1>{title}</h1>
@@ -30,7 +33,7 @@ function NewsCard2({ imageUrl, title, date, description }) {
 
 function NewsCard3 ({imageUrl, title}){
   return(
-    <a href={`/news/${encodeURIComponent(title)}`} className={styles.newsCard3}>
+    <a href={`/news/${encodeURIComponent(title)}`} className={styles.newsCard3} data-aos="fade-left">
       <div className={styles.imageContainer}>
         <img src={imageUrl} alt={title} />
       </div>
