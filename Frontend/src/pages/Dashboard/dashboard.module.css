@@ -1,15 +1,9 @@
-.dashboardContainer {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-    background-color: #f0f0f0;
-  }
+
   .admindashboard {
     display: flex;
     height: 100vh;
     background-color: #f4f4f4;
+    overflow: hidden;
   }
   
   .sidebar {
@@ -19,12 +13,12 @@
     color: white;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    /* justify-content: space-between; */
   }
   
   .sidebar h2 {
     font-size: 24px;
-    margin-bottom: 20px;
+    margin-bottom: 30px;
   }
   
   .sidebar ul {
@@ -55,6 +49,7 @@
     padding: 20px;
     background-color: #ecf0f1;
     overflow-y: auto;
+    overflow: scroll;
   }
   
   .content h1 {

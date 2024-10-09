@@ -1,0 +1,90 @@
+/* index.css */
+
+body {
+    font-family: "Arial", sans-serif;
+    margin: 0;
+    padding: 20px;
+  }
+  
+  .h1 {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .newspaper-preview {
+    display: flex;
+    flex-direction: column;
+    gap: 20px; /* Adds space between pages */
+  }
+  
+  .page {
+    border: 1px solid #ccc;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    /* flex-direction: column; */
+    flex-wrap: wrap;
+    height: 100%;  
+    width: fit-content;
+    gap: 10px;
+  }
+  
+  .section {
+    /* margin-bottom: 15px; */
+    width: fit-content;
+
+  }
+  
+  .column-wrapper {
+    display: flex;
+    flex-direction: row;
+    /* justify-content: space-between; */
+    gap: 10px; /* Space between columns */
+    width: 300px;
+    
+  }
+  
+  .column {
+    width:100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background: #f9f9f9; /* Light background for readability */
+    box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  .headline {
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 5px;
+    width: 100%;
+  }
+  
+  .subHeadline {
+    font-size: 14px;
+    font-style: italic;
+    margin-bottom: 5px;
+    width: 100%;
+  }
+  
+  .article {
+    font-size: 12px;
+    margin-bottom: 10px;
+    width: 100%;
+  }
+  
+  .image {
+    width: 100%;
+    height: auto; /* Ensure images maintain aspect ratio */
+    margin-bottom: 10px;
+    border-radius: 5px; /* Optional: Add some rounding to images */
+  }
+  
+  .footer {
+    text-align: center;
+    font-size: 12px;
+    font-weight: bold;
+    margin-top: 10px;
+  }
+  

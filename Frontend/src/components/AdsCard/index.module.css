@@ -38,3 +38,89 @@
     text-transform: uppercase;
     font-family: inter;
 }
+
+body.blurred {
+    filter: blur(106px);
+    pointer-events: none;
+  }
+  
+  /* Modal backdrop */
+  .modal {
+    display: flex;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+    justify-content: center;
+    align-items: center;
+    backdrop-filter: blur(5px); /* Blur background */
+  }
+  .modalContent ::-webkit-scrollbar{
+    display: none;
+  }
+  .modalContent {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    max-width: 600px;
+    width: 100%;
+    max-height: 80%; /* Limit the height of the modal */
+    overflow: hidden; /* Hide overflowing content */
+    position: relative;
+    transform: scale(0); /* Initial scale for opening animation */
+    animation: scaleUp 0.3s forwards; /* Scale up animation */
+}
+.modalContent.closing {
+    animation: scaleDown 0.3s forwards; /* Scale down animation for closing */
+}
+  .modalContent img {
+    width: 100%;
+    height: auto;
+  }
+  
+  .modalContent h2 {
+    margin: 20px 0 10px;
+  }
+  
+  .modalContent p {
+    margin: 10px 0;
+  }
+  
+  .modalBody {
+    max-height: 400px; /* Set a max height for the content */
+    overflow-y: auto; /* Enable vertical scrolling */
+    padding-right: 10px; /* Add some padding to the right for scroll bar */
+  }
+  
+  .close {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 25px;
+    font-weight: bold;
+    cursor: pointer;
+  }
+  
+  
+  /* Animation keyframes */
+  @keyframes scaleUp {
+    from {
+      transform: scale(0);
+    }
+    to {
+      transform: scale(1);
+    }
+  }
+  
+  @keyframes scaleDown {
+    from {
+        transform: scale(1);
+    }
+    to {
+        transform: scale(0);
+    }
+}
+  

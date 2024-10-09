@@ -1,81 +1,139 @@
+/* Main container styles */
 .manageContainer {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 2rem;
-    background-color: #f9fafb; /* Light gray */
-    border-radius: 0.5rem;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-}
-
-.manageHeading {
-    text-align: center;
-    font-size: 2rem;
-    color: #1f2937; /* Gray 800 */
-    margin-bottom: 2rem;
-}
-.cardContainer{
-    display: flex;
-    flex-wrap: wrap;
-}
-.promoGrid {
+    padding: 20px;
+  }
+  
+  .manageHeading {
+    font-size: 28px;
+    margin-bottom: 20px;
+  }
+  
+  /* Card container styles */
+  .cardContainer {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Responsive grid */
-    gap: 1.5rem; /* Space between items */
-}
-
-.promoCard {
-    background-color: #ffffff; /* White */
-    border-radius: 0.5rem;
-    padding: 1.5rem;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+  }
+  
+  /* Promotional card styles */
+  .promoCard {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 15px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.promoTitle {
-    font-size: 1.5rem;
-    color: #1f2937; /* Gray 800 */
-    margin: 0.5rem 0;
-}
-
-.promoContent {
-    color: #374151; /* Gray 700 */
-    margin: 0.5rem 0;
-    text-align: center; /* Center text */
-}
-
-.promoDate {
-    font-weight: bold;
-    color: #6b7280; /* Gray 500 */
-}
-
-.promoImage {
-    max-width: 200px;
-    height: auto;
-    border-radius: 0.25rem;
-    margin: 0.5rem 0;
-}
-
-.statusLabel {
-    font-weight: bold;
-}
-
-.actionButtons {
-    margin-top: 1rem;
-}
-
-.button {
-    background-color: #2563eb; /* Blue 600 */
-    color: #ffffff; /* White */
-    border: none;
-    border-radius: 0.375rem;
-    padding: 0.5rem 1rem;
+    transition: transform 0.2s;
     cursor: pointer;
-    transition: background-color 0.3s;
-    margin-right: 0.5rem;
-}
-
-.button:hover {
-    background-color: #1d4ed8; /* Blue 700 */
-}
+  }
+  
+  .promoCard:hover {
+    transform: scale(1.05);
+  }
+  
+  .promoTitle {
+    font-size: 20px;
+    margin-bottom: 10px;
+  }
+  
+  .promoContent {
+    font-size: 16px;
+    margin-bottom: 10px;
+  }
+  
+  .promoDate {
+    font-size: 14px;
+    color: #888;
+  }
+  
+  .promoImage {
+    width: 100%;
+    height: auto;
+    border-radius: 5px;
+    margin: 10px 0;
+  }
+  
+  .statusLabel {
+    font-weight: bold;
+  }
+  
+  /* Modal styles */
+  .modalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .modalContent {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    width: 80%;
+    max-width: 600px;
+    max-height: 80vh; /* Set a maximum height for the modal */
+    overflow-y: auto; /* Enable vertical scrolling */
+  }
+  
+  .modalTitle {
+    font-size: 24px;
+    margin-bottom: 10px;
+  }
+  
+  .modalDate {
+    font-size: 16px;
+    color: #888;
+  }
+  
+  .modalContentText {
+    font-size: 16px;
+    color: #555;
+  }
+  
+  .modalImage {
+    width: 100%;
+    height: auto;
+    border-radius: 5px;
+    margin: 10px 0;
+  }
+  
+  .actionButtons {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .button {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+  }
+  
+  .approveButton {
+    background-color: #4CAF50; /* Green */
+    color: white;
+  }
+  
+  .rejectButton {
+    background-color: #f44336; /* Red */
+    color: white;
+  }
+  
+  .button:hover {
+    opacity: 0.9; /* Slight opacity change on hover */
+  }
+  
+  .closeButton {
+    margin-top: 10px;
+    background-color: #ccc;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
