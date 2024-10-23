@@ -1,198 +1,176 @@
-import { useState } from "react";
-import {
-  Page,
-  Text,
-  View,
-  Document,
-  StyleSheet,
-  Image,
-  PDFDownloadLink,
-} from "@react-pdf/renderer";
+/* eslint-disable react/prop-types */
+import { useState, useEffect } from "react";
+import jsPDF from "jspdf";
+import html2canvas from "html2canvas";
 import "./index.css";
-
-// Define styles for the PDF document
-const pdfStyles = StyleSheet.create({
-  page: {
-    padding: 20,
-    fontFamily: "Times-Roman",
-  },
-  heading: {
-    fontSize: 24,
-    textAlign: "center",
-    marginBottom: 10,
-    fontWeight: "bold", // Makes the heading bold
-  },
-  grid: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    justifyContent: "space-between",
-  },
-  card: {
-    width: "32%", // Card width to fit three in a row
-    marginBottom: 10,
-    padding: 5,
-    border: "1px solid #000", // Optional: Add border to the cards
-    fontSize: 8, // Smaller font size for better fit
-  },
-  headline: {
-    fontSize: 14, // Reduced headline font size
-    fontWeight: "bold",
-    marginBottom: 2,
-  },
-  subHeadline: {
-    fontSize: 8, // Reduced subheadline font size
-    fontStyle: "italic",
-    marginBottom: 2,
-  },
-  article: {
-    fontSize: 6, // Reduced article text font size
-    textAlign: "justify",
-    marginBottom: 5,
-  },
-  image: {
-    width: "100%",
-    height: 80, // Reduced image height
-    marginBottom: 5,
-  },
-  footer: {
-    marginTop: 10,
-    fontSize: 6,
-    textAlign: "center",
-  },
-});
-
-// PDF Document Layout
-const NewspaperPDF = ({ newsData }) => {
-  const limitedNewsData = newsData.flat().slice(0, 15); // Limit to the first 15 articles
-
-  return (
-    <Document>
-    <Page size={[594, 841]} style={pdfStyles.page}>
-      {/* Newspaper Heading */}
-      <Text style={{ fontSize: 24, textAlign: 'center', marginBottom: 20 }}>
-        News Scade
-      </Text>
-      <Text style={{ fontSize: 14, textAlign: 'center', marginBottom: 20 }}>
-        Date: {new Date().toLocaleDateString()} {/* Add current date */}
-      </Text>
-      
-      <View style={pdfStyles.grid}>
-        {limitedNewsData.map((article, articleIndex) => (
-          <View key={articleIndex} style={pdfStyles.card}>
-            <Text style={pdfStyles.headline}>{article.title}</Text>
-            <Text style={pdfStyles.subHeadline}>
-              {article.category} - {article.publishedAt}
-            </Text>
-            {article.urlToImage && (
-              <Image style={pdfStyles.image} src={article.urlToImage} />
-            )}
-            <Text style={pdfStyles.article}>{article.description}</Text>
-            <Text style={pdfStyles.article}>{article.content}</Text>
-          </View>
-        ))}
-      </View>
-      <Text style={pdfStyles.footer}>The Daily Times</Text>
-    </Page>
-  </Document>
-
-  );
-};
+import "./pdfstyle.css";
 
 // Editable Newspaper UI Component
-const NewsPaperGenerator = ({ news }) => {
-  const [newsData, setNewsData] = useState([news]);
+const NewspaperPDF = ({ news }) => {
+  const [newsData, setNewsData] = useState([]);
+  
+  const currentDate = new Date().toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
 
-  const handleContentChange = (pageIndex, articleIndex, field, value) => {
-    const updatedNews = [...newsData];
-    updatedNews[pageIndex][articleIndex][field] = value;
-    setNewsData(updatedNews);
+  useEffect(() => {
+    const uniqueCategories = new Set();
+    const categorizedNews = [];
+    
+    // Shuffle the news array
+    const shuffledNews = [...news].sort(() => 0.5 - Math.random());
+
+    // Loop through shuffled news to get articles from unique categories
+    for (const article of shuffledNews) {
+      if (!uniqueCategories.has(article.category)) {
+        uniqueCategories.add(article.category);
+        categorizedNews.push(article);
+      }
+      // Stop if we have 5 articles
+      if (categorizedNews.length === 5) break;
+    }
+
+    // Set the selected news articles to state
+    setNewsData(categorizedNews);
+  }, [news]);
+
+  // Function to generate the PDF
+  const generatePDF = () => {
+    const input = document.getElementById("newspaperPreview"); // Capture the HTML content
+
+    html2canvas(input, { scale: 2 }).then((canvas) => {
+      const imgData = canvas.toDataURL("image/png");
+      const pdf = new jsPDF("p", "mm", "a4");
+
+      // Add the canvas image to the PDF
+      const imgWidth = 210; // A4 width in mm
+      const imgHeight = (canvas.height * imgWidth) / canvas.width; // Maintain image aspect ratio
+
+      pdf.addImage(imgData, "PNG", 0, 0, imgWidth, imgHeight);
+      pdf.save("newspaper.pdf"); // Save the PDF
+    });
   };
 
   return (
     <div>
       <h1 className="h1">Newspaper Editor</h1>
-      <div className="newspaper-preview">
-        {newsData.map((page, pageIndex) => (
-          <div key={pageIndex} className="page">
-            {page.map((article, articleIndex) => (
-              <div key={articleIndex} className="section">
-                <div className="column-wrapper">
-                  <div className="column">
-                    <input
-                      type="text"
-                      value={article.title}
-                      onChange={(e) =>
-                        handleContentChange(
-                          pageIndex,
-                          articleIndex,
-                          "title",
-                          e.target.value
-                        )
-                      }
-                      className="headline"
-                    />
-                    <input
-                      type="text"
-                      value={article.category}
-                      onChange={(e) =>
-                        handleContentChange(
-                          pageIndex,
-                          articleIndex,
-                          "category",
-                          e.target.value
-                        )
-                      }
-                      className="subHeadline"
-                    />
-                    <img
-                      src={article.urlToImage}
-                      alt="news"
-                      className="image"
-                    />
-                    <textarea
-                      value={article.description}
-                      onChange={(e) =>
-                        handleContentChange(
-                          pageIndex,
-                          articleIndex,
-                          "description",
-                          e.target.value
-                        )
-                      }
-                      className="article"
-                    />
-                    <textarea
-                      value={article.content}
-                      onChange={(e) =>
-                        handleContentChange(
-                          pageIndex,
-                          articleIndex,
-                          "content",
-                          e.target.value
-                        )
-                      }
-                      className="article"
-                    />
+
+      {/* Live Preview Section */}
+      <div id="newspaperPreview" className="newspaper-preview">
+        <div className="newspaperContainer">
+          <nav>
+            <div className="topInfo">
+              <h3>{currentDate}</h3>
+              <h3>Price : 10</h3>
+            </div>
+            <hr />
+            <h1>NEWS SCADE</h1>
+            <hr />
+            <div className="btmInfo">
+              <h3>World</h3>
+              <h3>•</h3>
+              <h3>India</h3>
+              <h3>•</h3>
+              <h3>Kerala</h3>
+              <h3>•</h3>
+              <h3>Education</h3>
+              <h3>•</h3>
+              <h3>Lifestyle</h3>
+              <h3>•</h3>
+              <h3>Politics</h3>
+            </div>
+          </nav>
+          <section>
+            {newsData.length === 0 ? (
+              <p>No news articles available.</p>
+            ) : (
+              <div className="col1">
+                {/* News 1 */}
+                <div className="col1-row1">
+                  <div className="col1-row1-col1">
+                    <h4>{newsData[0]?.title || "News 1 Head"}</h4>
+                    <p>{newsData[0]?.content || "News 1 Description"}</p>
+                  </div>
+                  <div className="col1-row1-col2">
+                    <div className="col1-row1-col2-row1">
+                      <h3>{newsData[1]?.title || "News 2 Head"}</h3>
+                      {newsData[1]?.urlToImage && (
+                        <img
+                          src={newsData[1].urlToImage}
+                          alt="News 2 Image"
+                          onLoad={() => console.log("Image 2 loaded")}
+                        />
+                      )}
+                    </div>
+                    <div className="col1-row1-col2-row2">
+                      <div className="col1-row1-col2-row2-col1">
+                        <p>{newsData[1]?.content.slice(0, 1100) || "News 2 Description"}</p>
+                      </div>
+                      <div className="col1-row1-col2-row2-col2">
+                        <p>
+                          {newsData[1]?.content.slice(1100) || "News 2 Description Continuation"}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* News 3 */}
+                <div className="col1-row2">
+                  <div className="col1-row2-col1">
+                    <div className="col1-row2-col1-row1">
+                      <h4>{newsData[2]?.title || "News 3 Head"}</h4>
+                    </div>
+                    <div className="col1-row2-col1-row2">
+                      <div className="col1-row2-col1-row2-col1">
+                        <p>{newsData[2]?.content.slice(0, 1496) || "News 3 Description"}</p>
+                      </div>
+                      <div className="col1-row2-col1-row2-col2">
+                        <p>{newsData[2]?.content.slice(1497) || "News 3 Description Continuation"}</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="col1-row2-col2">
+                    {newsData[2]?.urlToImage && (
+                      <img
+                        src={newsData[2].urlToImage}
+                        alt="News 3 Image"
+                        onLoad={() => console.log("Image 3 loaded")}
+                      />
+                    )}
                   </div>
                 </div>
               </div>
-            ))}
-            <div className="footer">
-              Page {pageIndex + 1} - The Daily Times
+            )}
+
+            {/* News 4 & News 5 */}
+            <div className="col2">
+              <div className="col2-row1">
+                <h4>{newsData[3]?.title || "News 4 Head"}</h4>
+                <p>{newsData[3]?.content || "News 4 Description"}</p>
+              </div>
+              <div className="col2-row2">
+                {newsData[4]?.urlToImage && (
+                  <img
+                    src={newsData[4].urlToImage}
+                    alt="News 5 Image"
+                    onLoad={() => console.log("Image 5 loaded")}
+                  />
+                )}
+                <h4>{newsData[4]?.title || "News 5 Head"}</h4>
+                <p>{newsData[4]?.content || "News 5 Description"}</p>
+              </div>
             </div>
-          </div>
-        ))}
+          </section>
+        </div>
       </div>
-      <PDFDownloadLink
-        document={<NewspaperPDF newsData={newsData} />}
-        fileName="newspaper.pdf"
-      >
-        {({ loading }) =>
-          loading ? "Loading PDF..." : <button>Download PDF</button>
-        }
-      </PDFDownloadLink>
+
+      {/* Button to generate PDF */}
+      <button onClick={generatePDF}>Download PDF</button>
     </div>
   );
 };
 
-export default NewsPaperGenerator;
+export default NewspaperPDF;

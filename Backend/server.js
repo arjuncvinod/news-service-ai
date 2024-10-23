@@ -127,6 +127,43 @@ app.get('/news/by-title', async (req, res) => {
     res.status(500).send({ error: 'Failed to retrieve news article' });
   }
 });
+
+app.delete('/news/delete', async (req, res) => {
+  try {
+    const { date, title } = req.query;
+
+    if (!date || !title) {
+      return res.status(400).send({ error: 'Date and title query parameters are required' });
+    }
+
+    const formattedDate = format(new Date(date), 'yyyy-MM-dd');
+    const newsDoc = await db.collection('news').doc(formattedDate).get();
+
+    if (newsDoc.exists) {
+      let articles = newsDoc.data().articles;
+
+      const articleIndex = articles.findIndex(article => article.title === decodeURIComponent(title));
+      
+      if (articleIndex !== -1) {
+        // Remove the article by title
+        articles.splice(articleIndex, 1);
+
+        // Update the news document with the modified articles array
+        await db.collection('news').doc(formattedDate).update({ articles });
+
+        res.send({ message: `News article titled "${title}" deleted successfully`, data: articles });
+      } else {
+        res.status(404).send({ message: `No news article found with the title: ${title}` });
+      }
+    } else {
+      res.status(404).send({ message: `No news data found for the date: ${formattedDate}` });
+    }
+  } catch (error) {
+    console.error('Error deleting news article:', error);
+    res.status(500).send({ error: 'Failed to delete news article' });
+  }
+});
+
 app.get('/', async (req, res) => {
   res.send('API is live');
 });

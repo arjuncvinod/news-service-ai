@@ -25,7 +25,7 @@ const LoginPage = () => {
 
         if (userDoc.exists()) {
           const userData = userDoc.data();
-          const role = userData.role; // Assume 'role' is a field in the Firestore user document
+          const role = userData.role; 
 
           // Redirect based on the role
           if (role === 'admin') {

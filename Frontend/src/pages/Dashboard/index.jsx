@@ -4,11 +4,12 @@ import { useNavigate } from 'react-router-dom';
 import { auth } from '../../services/firebase'; 
 import ManageUsers from '../../components/ManageUsers';
 import ManageNews from '../../components/MangeNews'; // Fixed typo in ManageNews import
+import SubmitNews from '../../components/SubmitNews';
 import styles from "./dashboard.module.css";
 import axios from 'axios';
 import toast from "react-hot-toast";
 import ManagePromoContent from '../../components/ManagePromo';
-import NewsPaperGenerator from '../../components/GeneratePdf';
+import NewsPaperGenerator from '../../components/GeneratePdf/index';
 import { getDate } from '../../services/functions';
 import Loader from '../../components/Loader/Loader';
 
@@ -83,6 +84,7 @@ function AdminDashboard() {
           <li><Link to="/admin/manage-promo">Manage Promo</Link></li>
           <li onClick={fetchNews}><a>Generate News</a></li> {/* fetchNews called on click */}
           <li><Link to="/admin/generatenewspaper">Generate Newspaper</Link></li>
+          <li><Link to="/admin/submit-news">Submit News</Link></li>
           <li onClick={handleLogout}><a>Logout</a></li>
         </ul>
       </nav>
@@ -92,6 +94,7 @@ function AdminDashboard() {
           <Route path="/manage-news" element={<ManageNews />} />
           <Route path="/manage-promo" element={<ManagePromoContent />} />
           <Route path="/generatenewspaper" element={<NewsPaperGenerator news={news} />} />
+          <Route path="/submit-news" element={<SubmitNews />} />
         </Routes>
       </div>
     </div>

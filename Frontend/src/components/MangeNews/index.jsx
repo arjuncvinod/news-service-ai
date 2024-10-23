@@ -1,11 +1,12 @@
 import { useState } from 'react';
 import axios from 'axios';
 import styles from "./index.module.css";
-
+import toast from "react-hot-toast";
 function ManageNews() {
   const [date, setDate] = useState('');
   const [news, setNews] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [deleting, setDeleting] = useState(false);
 
   const fetchNews = async () => {
     try {
@@ -13,11 +14,9 @@ function ManageNews() {
       const response = await axios.get(`${import.meta.env.VITE_API}/news`, {
         params: {
           date: date,
-          category: "all"
+          category: "all",
         }
       });
-
-      console.log('API Response:', response.data); // Log API response
 
       if (response.data.data && response.data.data.length > 0) {
         setNews(response.data.data);
@@ -33,6 +32,32 @@ function ManageNews() {
     }
   };
 
+  const deleteNews = async (title) => {
+    const loadingToast = toast.loading('Deleting news...'); // Show loading toast
+  
+    try {
+      setDeleting(true);
+      
+      const response = await axios.delete(`${import.meta.env.VITE_API}/news/delete`, {
+        params: {
+          date: date,
+          title: encodeURIComponent(title),
+        },
+      });
+  
+      if (response.data.data) {
+        // Update the news list after deletion
+        setNews(response.data.data);
+        toast.success(`Deleted successfully!`, { id: loadingToast }); // Show success toast and remove loading toast
+      }
+    } catch (error) {
+      console.error('Error deleting news:', error);
+      toast.error('Error deleting news. Please try again.', { id: loadingToast }); // Show error toast and remove loading toast
+    } finally {
+      setDeleting(false);
+    }
+  };
+
   return (
     <div className={styles.manageNews}>
       <h1 className={styles.title}>Manage News</h1>
@@ -45,8 +70,8 @@ function ManageNews() {
           onChange={(e) => setDate(e.target.value)}
           className={styles.dateInput}
         />
-        <button 
-          onClick={fetchNews} 
+        <button
+          onClick={fetchNews}
           disabled={!date}
           className={styles.fetchButton}
         >
@@ -63,6 +88,14 @@ function ManageNews() {
               <p><em>{new Date(article.publishedAt).toDateString()}</em></p>
               <h3 className={styles.newsItemTitle}>{article.title}</h3>
               <p className={styles.newsItemDescription}>{article.description}</p>
+              {/* Delete Button */}
+              <button
+                onClick={() => deleteNews(article.title)}
+                className={styles.deleteButton}
+                disabled={deleting}
+              >
+                Delete
+              </button>
             </div>
           ))}
         </div>
